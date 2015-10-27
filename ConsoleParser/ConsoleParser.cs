@@ -28,7 +28,7 @@ namespace ConsoleParser
                 .AddField(a => a.Name)
                 .AddField(a => a.Paid);
 
-            //Initialize();
+            Initialize();
 
             var queryStr1 = @"
 query user(id:1) {

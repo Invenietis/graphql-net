@@ -135,6 +135,10 @@ namespace GraphQL.Net
             var replacedContext = ParameterReplacer.Replace(replacedBase, expr.Parameters[0], GraphQLSchema<TContext>.DbParam);
             if( !map.Children.Any() )
             {
+#if DNX
+                if( map.SchemaField.Type.CLRType.IsPrimitive )
+                    replacedContext = Expression.Convert( replacedContext, typeof( object ) );
+#endif
                 return Expression.Bind( toMember, replacedContext );
             }
             var memberInit = GetMemberInit(map.Children, replacedContext);

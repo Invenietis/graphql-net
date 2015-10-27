@@ -17,9 +17,7 @@
         "EntityFramework.SqlServer": "7.0.0-beta8",
         "Newtonsoft.Json": "7.0.1"
     },
-
     "commands": {
         "DnxTests": "DnxTests"
     }
-
 }
