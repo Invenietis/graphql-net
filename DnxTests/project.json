@@ -1,0 +1,25 @@
+{
+    "version": "1.0.0-*",
+    "description": "DnxConsoleParser Class Library",
+    "authors": [ "cedri_000" ],
+    "tags": [ "" ],
+    "projectUrl": "",
+    "licenseUrl": "",
+    "frameworks": {
+        "dnx451": {
+            "dependencies": {
+                "GraphQL.Net": "1.0.0-*"
+            }
+        }
+    },
+    "dependencies": {
+        "EntityFramework.Core": "7.0.0-beta8",
+        "EntityFramework.SqlServer": "7.0.0-beta8",
+        "Newtonsoft.Json": "7.0.1"
+    },
+
+    "commands": {
+        "DnxTests": "DnxTests"
+    }
+
+}

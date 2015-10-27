@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0-*",
+  "frameworks": {
+    "net45": {
+      "wrappedProject": "../../GraphQL.Net/GraphQL.Net.csproj",
+      "bin": {
+        "assembly": "../../GraphQL.Net/obj/{configuration}/GraphQL.Net.dll",
+        "pdb": "../../GraphQL.Net/obj/{configuration}/GraphQL.Net.pdb"
+      },
+      "dependencies": {
+        "GraphQL.Parser": "1.0.0-*",
+        "FSharp.Core": "1.0.0-*"
+      }
+    }
+  }
+}

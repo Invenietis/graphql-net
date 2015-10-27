@@ -1,0 +1,7 @@
+﻿{
+	"Data": {
+		"DefaultConnection": {
+			"ConnectionString": "Server=.;Database=GraphQL;Integrated Security=SSPI;MultipleActiveResultSets=True;"
+		}
+	}
+}
