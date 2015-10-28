@@ -20,7 +20,9 @@ namespace GraphQL.Net
             var args = TypeHelpers.GetArgs<TArgs>(query.Inputs);
             var queryableFuncExpr = gqlQuery.QueryableExprGetter(args);
             var replaced = (Expression<Func<TContext, IQueryable<TEntity>>>)ParameterReplacer.Replace(queryableFuncExpr, queryableFuncExpr.Parameters[0], GraphQLSchema<TContext>.DbParam);
+
             var fieldMaps = query.Fields.Select(f => MapField(f, gqlQuery.Type)).ToList();
+
             var selectorW = GetSelector<TEntity>(fieldMaps);
             var gqlType = selectorW.GqlSelectorType;
             var selector = selectorW.Lambda;
@@ -52,6 +54,7 @@ namespace GraphQL.Net
 
             return new Dictionary<string, object> { { "data", results } };
         }
+
 
         private static IDictionary<string, object> MapResults( IGQLQueryObject queryObject, IEnumerable<FieldMap> fieldMaps )
         {

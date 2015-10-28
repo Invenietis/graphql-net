@@ -7,6 +7,16 @@ namespace GraphQL.Net
         public string Name { get; set; }
         public List<Input> Inputs { get; set; }
         public List<Field> Fields { get; set; }
+        public List<Fragment> Fragments { get; set; }
+    }
+
+    public class Fragment
+    {
+        public string Name { get; set; }
+
+        public string AppliedEntity { get; set; }
+
+        public List<Field> Fields { get; set; }
     }
 
     public class Field
@@ -14,6 +24,8 @@ namespace GraphQL.Net
         public string Name { get; set; }
         public string Alias { get; set; }
         public List<Field> Fields { get; set; }
+        public string FragmentRef { get; set; }
+        public Fragment FragmentInline { get; set; }
     }
 
     public class Input

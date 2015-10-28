@@ -55,6 +55,7 @@
     <Compile Include="GraphQLParser.fs" />
     <Content Include="packages.config" />
     <Content Include="app.config" />
+    <None Include="GraphQL.Parser.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FParsec">

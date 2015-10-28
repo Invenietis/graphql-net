@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>GraphQL.Net</id>
+    <version>1.0.0.0-alpha-01</version>
+    <title>GraphQL.Net</title>
+    <authors>cedri_000</authors>
+    <owners>cedri_000</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Description</description>
+    <copyright>Copyright ©  2015</copyright>
+    <dependencies>
+      <dependency id="GraphQL.Parser" version="1.0.0-alpha" />
+    </dependencies>
+  </metadata>
+</package>

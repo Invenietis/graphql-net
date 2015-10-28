@@ -66,14 +66,28 @@ query users {
     total
     accountPaid
 }";
-            //using( var db = new TestContext() )
-            //{
-            //    var expr = (from p in db.Users select new GQLQueryObject2 { Field1 = p.Id, Field2 = p.Name });
-            //    var results = expr.ToList();
-            //    var baseDict = new Dictionary<string, object> { { "data", results } };
-            //    Console.WriteLine( JsonConvert.SerializeObject( baseDict, Formatting.Indented ) );
-            //}
 
+            var queryStr4 = @"
+query users {
+   ...userFragment
+    account {
+        ...accountFragment
+    }
+    total
+    accountPaid
+}
+
+fragment userFragment on User {
+   idAlias : id,
+   nameAlias : name
+}
+
+fragment accountFragment on Account {
+    id
+    name
+    paid
+}
+";
             var dict = GraphQL<TestContext>.Execute(queryStr0);
             Console.WriteLine( JsonConvert.SerializeObject( dict, Formatting.Indented ) );
 
@@ -84,6 +98,9 @@ query users {
             Console.WriteLine( JsonConvert.SerializeObject( dict, Formatting.Indented ) );
 
             dict = GraphQL<TestContext>.Execute( queryStr3 );
+            Console.WriteLine( JsonConvert.SerializeObject( dict, Formatting.Indented ) );
+
+            dict = GraphQL<TestContext>.Execute( queryStr4 );
             Console.WriteLine( JsonConvert.SerializeObject( dict, Formatting.Indented ) );
 
             Console.ReadLine();
@@ -129,7 +146,7 @@ query users {
 
         protected override void OnConfiguring( DbContextOptionsBuilder optionsBuilder )
         {
-            optionsBuilder.UseSqlServer( "Server=.;Database=GraphQL;Integrated Security=SSPI;MultipleActiveResultSets=True;" ).DisableQueryClientEvaluation();
+            optionsBuilder.UseSqlServer( "Server=.;Database=GraphQL;Integrated Security=SSPI;" ).DisableQueryClientEvaluation();
             base.OnConfiguring( optionsBuilder );
         }
 

@@ -15,17 +15,19 @@ type Arguments = Argument list
 type Directive = string * Arguments option
 type Directives = Directive list
 
-type Selection = Field of alias : Alias * name : string * arguments : Arguments * directives : Directives * selectionSet : SelectionSet
+type Selection = Field of alias : Alias  * fragmentIdentifier : string option * name : string * arguments : Arguments * directives : Directives * selectionSet : SelectionSet
 and SelectionSet = Selection list
 
-type Query = string * Arguments * SelectionSet
+type Fragment =  Fragment of string * string * SelectionSet
+type Fragments = Fragment list
+type Query = string * Arguments * SelectionSet * Fragments
 
 type Definition = QueryOperation of Query
                 | MutationOperation
-                | Fragment
                 | TypeExt
                 | TypeDef
                 | Enum
+                | Definition
 
 type Document = Definition List
 
@@ -49,6 +51,7 @@ let value = pbool <|> pnum
 let alias = name .>> str ":" .>> ws
 let argument = name .>>. (ws >>. str ":" >>. ws >>. value .>> ws)
 let arguments = str "(" >>. ws >>. many argument .>> str ")" .>> ws
+let fragIdentifier = str "..."
 
 let directive = str "@" >>. name .>>. opt (attempt arguments)
 let directives = many1 directive
@@ -61,20 +64,34 @@ let coalesce optList =
     | Some opts -> opts
     | None -> List.Empty
 
-do fieldref := pipe5
+let pipe6 p1 p2 p3 p4 p5 p6 f = 
+    pipe5 p1 p2 p3 p4 (tuple2 p5 p6)
+          (fun x1 x2 x3 x4 (x5, x6) -> f x1 x2 x3 x4 x5 x6) 
+
+do fieldref := pipe6 
     (opt (attempt alias))
+    (opt (attempt fragIdentifier))
     name
     (opt (attempt arguments))
     (opt (attempt directives))
     (opt (attempt selectionset))
-    (fun alias name args dirs set ->
-        Field(alias, name, coalesce args, coalesce dirs, coalesce set))
-let query =
-    pipe3
-        (ws >>. str "query" >>. ws >>. name)
-        (opt (attempt arguments))
-        selectionset
-        (fun name args set -> QueryOperation((name, coalesce args, set)))
+    (fun alias fragmentIdentifier name args dirs set-> Field(alias, fragmentIdentifier, name, coalesce args, coalesce dirs, coalesce set ))
+
+let fragment = pipe3
+                (ws >>. str "fragment" >>. ws >>. name )
+                (ws >>. str "on" >>. ws >>. name )
+                selectionset
+                (fun q objectEntity s -> Fragment( q, objectEntity, s ))
+let fragments = ws >>. many1 fragment .>> ws
+
+let query = pipe4
+                (ws >>. str "query" >>. ws >>. name )
+                (opt (attempt arguments))
+                selectionset
+                (opt (attempt fragments))
+                (fun q args s f-> QueryOperation( q, coalesce args, s, coalesce f ))
+
+
 let parse str = 
         match run query str with
         | Success(result, _, _) -> Some result
